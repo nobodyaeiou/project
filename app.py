@@ -8,17 +8,17 @@ from sklearn.ensemble import GradientBoostingRegressor
 #layout design 
 #-------------
 
-st.title('Country GDP Estimation Tool')
+st.title('GDP Predictor Tool')
 st.write('''
-         This app will estimate the GDP per capita for a country, given some 
+         This web-app will predict the GDP per capita for a country, given some 
          attributes for that specific country as input.
          
-         Please fill in the attributes below, then hit the GDP Estimate button
-         to get the estimate. 
+         Please fill in the attributes below, then hit the Predict GDP button
+         to get the predicted GDP per capita. 
          ''')
 
 st.header('Input Attributes')
-att_popl = st.number_input('Population (Example: 7000000)', min_value=1e4, max_value=2e9, value=2e7)
+att_popl = st.number_input('Population (in numbers)', min_value=1e4, max_value=2e9, value=2e7)
 att_area = st.number_input('Area (sq. Km)', min_value= 2.0, max_value= 17e6, value=6e5)
 att_dens = st.number_input('Population Density (per sq. mile)', min_value= 0, max_value= 12000, value=400)
 att_cost = st.number_input('Coastline/Area Ratio', min_value= 0, max_value= 800, value=30)
@@ -41,9 +41,9 @@ st.write('''
          )
 att_brth = st.number_input('Annual Birth Rate (births/1,000)', min_value= 7, max_value= 50, value=20)
 att_deth = st.number_input('Annual Death Rate (deaths/1,000)', min_value= 2, max_value= 30, value=10)
-att_agrc = st.number_input('Agricultural Economy', min_value= 0.0, max_value= 1.0, value=0.15)
-att_inds = st.number_input('Industrial Economy', min_value= 0.0, max_value= 1.0, value=0.25)
-att_serv = st.number_input('Services Economy', min_value= 0.0, max_value= 1.0, value=0.60)
+att_agrc = st.number_input('Agricultural Economy (%)', min_value= 0.0, max_value= 1.0, value=0.15)
+att_inds = st.number_input('Industrial Economy (%)', min_value= 0.0, max_value= 1.0, value=0.25)
+att_serv = st.number_input('Services Economy (%)', min_value= 0.0, max_value= 1.0, value=0.60)
 st.text('(Agricultural, Industrial, and Services Economy should add up to 1)')
 att_regn = st.selectbox('Region', options=(1,2,3,4,5,6,7,8,9,10,11))
 st.write('''
@@ -111,7 +111,7 @@ def get_dataset():
     data = pd.read_csv('countries of the world.csv')
     return data
 
-if st.button('Estimate GDP'):
+if st.button('Predict GDP'):
     data = get_dataset()
     
     #fix column names
@@ -188,7 +188,7 @@ if st.button('Estimate GDP'):
     
     #making a prediction
     gbm_predictions = gbm_opt.predict(user_input) #user_input is taken from input attrebutes 
-    st.write('The estimated GDP per capita is: ', gbm_predictions)
+    st.write('The predicted GDP per capita (in USD) is: ', gbm_predictions)
 
 
 
